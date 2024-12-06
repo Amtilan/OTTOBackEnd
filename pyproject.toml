@@ -1,0 +1,29 @@
+[tool.poetry]
+name = "ottobackend"
+version = "0.1.0"
+description = ""
+authors = ["Amtilan <149930972+Amtilan@users.noreply.github.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+django = "^5.0.7"
+django-environ = "^0.11.2"
+psycopg2-binary = "^2.9.9"
+django-ninja = "^1.2.2"
+punq = "^0.7.0"
+pydantic = {extras = ["email"], version = "^2.8.2"}
+pytz = "^2024.1"
+azure-identity = "^1.17.1"
+django-ninja-jwt = "^5.3.3"
+django-cors-headers = "^4.4.0"
+pydicom = "^3.0.1"
+nibabel = "^5.2.1"
+highdicom = "^0.23.0"
+dicom2nifti = "^2.5.0"
+telethon = "^1.38.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

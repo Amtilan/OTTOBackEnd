@@ -1,0 +1,7 @@
+.venv
+*cache*
+*.pyc
+.vscode/
+.env
+local.py
+static/*
