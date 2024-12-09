@@ -1,9 +1,8 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import Iterable
-import asyncio
 
-from core.apps.common.telethon.test import TelegramConfig, TelegramService
+from core.apps.common.telethon.service import TelegramConfig, TelegramService
 from core.apps.customers.entities.customers import CustomerEntity
 
 
@@ -46,6 +45,5 @@ class ComposeSendersService(BaseSendersService):
 
     async def send_auth_code(self, Customer: CustomerEntity, auth_code: str) -> None:
         for service in self.sender_services:
-            # Ensure that you await the call if the service is asynchronous
             await service.send_auth_code(auth_code, Customer)
 

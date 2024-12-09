@@ -2,13 +2,12 @@ from asgiref.sync import sync_to_async
 from abc import ABC, abstractmethod
 from django.db import transaction
 from core.apps.customers.entities.customers import CustomerEntity
-from core.apps.customers.exception.customers import CustomerEmailExists, CustomerEmailNotFoundException, CustomerNotConfirmedException, CustomerPasswordNotCorrectException, CustomerPhoneNumNotFoundException, CustomerPhoneNumberExists, CustomerTokenNotFoundException
+from core.apps.customers.exception.customers import CustomerAccessTokenNotTrue, CustomerEmailExists, CustomerEmailNotFoundException, CustomerNotConfirmedException, CustomerPasswordNotCorrectException, CustomerPhoneNumNotFoundException, CustomerPhoneNumberExists, CustomerTokenNotFoundException
 from core.apps.customers.models.customers import Customer
-from core.apps.customers.services.token import BaseJWTService
+from core.apps.customers.services.token import BaseJWTService, ORMJWTService
 
 
 class BaseCustomerService(ABC):
-    JWT_service: BaseJWTService
     @abstractmethod
     async def create_Customer(self, phone_number: str ,email: str, first_name: str, last_name: str, password: str) -> CustomerEntity:
         ...
@@ -34,7 +33,9 @@ class BaseCustomerService(ABC):
     @abstractmethod
     def get_Customer_by_phone_num(self, phone_number: str) -> CustomerEntity:
         ...
-    
+    @abstractmethod
+    async def get_Customer_by_access_token(self, access_token: str) -> CustomerEntity:
+        ...
     @abstractmethod
     def get_new_by_refresh(self, refresh_token: str) -> CustomerEntity:
         ...
@@ -47,7 +48,9 @@ class BaseCustomerService(ABC):
     def get_confirmed(self, customer: CustomerEntity) -> None:
         ...
 
+
 class ORMCustomerService(BaseCustomerService):
+    JWT_service: BaseJWTService = ORMJWTService()
     async def create_Customer(self, phone_number: str, email: str, first_name: str, last_name: str, password: str) -> CustomerEntity:
         existing_email_customer = await sync_to_async(Customer.objects.filter(email=email).first)()
         if existing_email_customer:
@@ -92,16 +95,20 @@ class ORMCustomerService(BaseCustomerService):
         
         return self.generate_token(Customer_dto=Customer_dto)
 
-    def get_Customer_by_phone_num(self, phone_number):
+    def get_Customer_by_phone_num(self, phone_number) -> CustomerEntity:
         try:
             Customer_dto = Customer.objects.get(phone_number=phone_number)
-            if not Customer_dto.is_confirmed:
-                raise CustomerNotConfirmedException()
         except Customer.DoesNotExist:
             raise CustomerPhoneNumNotFoundException(phone_number=phone_number)
         
         return self.generate_token(Customer_dto=Customer_dto)
     
+    async def get_Customer_by_access_token(self, access_token: str) -> CustomerEntity:
+        customer_dto = await sync_to_async(Customer.objects.filter(access_token=access_token).first)()
+        if not customer_dto:
+            raise CustomerAccessTokenNotTrue("Access token is not valid.")
+        return customer_dto.to_entity()
+
     def authorize_Customer_email(self, email: str, password: str) -> CustomerEntity:
         try:
             Customer_dto = Customer.objects.get(email=email)

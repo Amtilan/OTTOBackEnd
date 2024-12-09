@@ -22,7 +22,6 @@ def _initialize_container() -> punq.Container:
         TGSenderService(),
         ),
     )
-    container.register(BaseJWTService, ORMJWTService)
     container.register(BaseAuthService, AuthService)
     
     

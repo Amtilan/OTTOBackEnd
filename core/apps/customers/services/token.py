@@ -8,7 +8,6 @@ class BaseJWTService(ABC):
     @abstractmethod
     def get_tokens_for_Customer(self, Customer: Customer) -> dict[str]:
         ...
-        
 
 class ORMJWTService(BaseJWTService):
     def get_tokens_for_Customer(self, Customer: Customer) -> dict[str]:

@@ -27,8 +27,11 @@ class CustomerNotConfirmedException(ServiceException):
     @property
     def message(self):
         return f"Customer not confirmed"
-
-
+@dataclass(eq=True)
+class CustomerAccessTokenNotTrue(ServiceException):
+    @property
+    def message(self):
+        return 'Not valid Token'
 @dataclass(eq=True)
 class CustomerPhoneNumNotFoundException(ServiceException):
     phone_number: str

@@ -70,4 +70,4 @@ class AuthService(BaseAuthService):
         Customer=self.Customer_service.get_Customer_by_phone_num(phone_number=phone_number)
         self.codes_service.validate_auth_code(code=code, Customer=Customer)
         self.Customer_service.get_confirmed(customer=Customer)
-        return self.Customer_service.generate_token(Customer=Customer)
+        return Customer
