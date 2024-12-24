@@ -58,6 +58,8 @@ class TelegramService:
                 print(f"Контакт с номером {phone_number} не найден.")
         except Exception as e:
             print(f"Ошибка при работе с контактом: {e}")
+        finally:
+            await self.client.disconnect()
     async def send_products(self, customer: CustomerEntity, products: list[str], cost: int) -> None:
         await self.start()
         message = self.create_message_for_product(
