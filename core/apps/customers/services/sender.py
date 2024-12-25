@@ -38,7 +38,19 @@ class TGSenderService(BaseSendersService):
             )
         finally:
             print(f'Sending Auth Code to {Customer=}')
-
+    async def send_new_password(self, Customer: CustomerEntity) -> None:
+        tg_service: TelegramService = TelegramService(config=TelegramConfig())
+        await tg_service.start()
+        try:
+            await tg_service.add_contact_and_message(
+                client_id=Customer.id,
+                phone_number=Customer.phone_number,
+                first_name=Customer.first_name,
+                last_name=Customer.last_name,
+                message=f"Your new password is {Customer.password}"
+            )
+        finally:
+            print(f'Sending New Password to {Customer=}')
 @dataclass
 class ComposeSendersService(BaseSendersService):
     sender_services: Iterable[BaseSendersService]

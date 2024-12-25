@@ -10,6 +10,10 @@ class RegisterInSchema(Schema):
     last_name: Optional[str] = ''
     password: str
 
+class ChangePasswordInSchema(Schema):
+    password: str
+    new_password: str
+
 class AuthInSchemaEmail(Schema):
     email: Optional[EmailStr]
     password: str
@@ -17,6 +21,9 @@ class AuthInSchemaEmail(Schema):
 class AuthInSchemaPhone(Schema):
     phone_number: str
     password: str
+
+class CustomerPhoneInSchema(Schema):
+    phone_number: str
 
 class AuthOutSchema(Schema):
     refresh_token: str

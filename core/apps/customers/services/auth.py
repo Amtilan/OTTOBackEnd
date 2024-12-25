@@ -34,7 +34,14 @@ class BaseAuthService(ABC):
     @abstractmethod
     def confirm(self, code: str, phone_number: str) -> CustomerEntity:
         ...
-        
+    
+    @abstractmethod
+    def change_password(self, access_token: str, new_password: str, password: str) -> CustomerEntity:
+        ...
+    
+    @abstractmethod
+    async def reset_password(self, phone_number: str) -> None:
+        ...
         
 class AuthService(BaseAuthService):
     def authorize_by_phone_number(self, phone_number: str, password: str) -> CustomerEntity:
@@ -71,3 +78,12 @@ class AuthService(BaseAuthService):
         self.codes_service.validate_auth_code(code=code, Customer=Customer)
         self.Customer_service.get_confirmed(customer=Customer)
         return Customer
+    def change_password(self, access_token: str, new_password: str, password: str) -> CustomerEntity:
+        Customer=self.Customer_service.get_by_token(token=access_token)
+        self.Customer_service.change_password(customer=Customer, new_password=new_password, password=password)
+        return Customer
+    
+    async def reset_password(self, phone_number: str) -> None:
+        Customer=await self.Customer_service.async_reset_password(phone_number=phone_number)
+        sender: BaseSendersService = TGSenderService()
+        await sender.send_new_password(Customer=Customer)

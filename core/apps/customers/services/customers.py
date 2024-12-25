@@ -1,3 +1,4 @@
+import secrets
 from asgiref.sync import sync_to_async
 from abc import ABC, abstractmethod
 from django.db import transaction
@@ -46,6 +47,15 @@ class BaseCustomerService(ABC):
         
     @abstractmethod
     def get_confirmed(self, customer: CustomerEntity) -> None:
+        ...
+    @abstractmethod
+    def change_password(self, customer: CustomerEntity, new_password: str, password: str) -> None:
+        ...
+    @abstractmethod
+    async def async_get_Customer_by_phone_num(self, phone_number: str) -> CustomerEntity:
+        ...
+    @abstractmethod
+    async def async_reset_password(self, phone_number: str) -> CustomerEntity:
         ...
 
 
@@ -158,3 +168,26 @@ class ORMCustomerService(BaseCustomerService):
         Customer_dto=Customer.objects.get(phone_number=customer.phone_number)
         Customer_dto.is_confirmed = True
         Customer_dto.save()
+    
+    def change_password(self, customer: CustomerEntity, new_password: str, password: str) -> None:
+        try:
+            Customer_dto = Customer.objects.get(phone_number=customer.phone_number)
+            if Customer_dto.password != password:
+                raise CustomerPasswordNotCorrectException(password=password)
+            Customer_dto.password = new_password
+            Customer_dto.save()
+        except Customer.DoesNotExist:
+            raise CustomerPhoneNumNotFoundException(phone_number=customer.phone_number)
+    async def async_get_Customer_by_phone_num(self, phone_number: str) -> CustomerEntity:
+        customer_dto = await sync_to_async(Customer.objects.filter(phone_number=phone_number).first)()
+        if not customer_dto:
+            raise CustomerPhoneNumNotFoundException(phone_number=phone_number)
+        return customer_dto.to_entity()
+    async def async_reset_password(self, phone_number: str) -> CustomerEntity:
+        customer_dto = await sync_to_async(Customer.objects.filter(phone_number=phone_number).first)()
+        if not customer_dto:
+            raise CustomerPhoneNumNotFoundException(phone_number=phone_number)
+        new_password = secrets.token_hex(8)
+        customer_dto.password = new_password
+        await sync_to_async(customer_dto.save)()
+        return customer_dto.to_entity()

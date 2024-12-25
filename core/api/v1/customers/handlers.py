@@ -5,7 +5,7 @@ from ninja.errors import HttpError
 
 from core.api.schemas import ApiResponse
 
-from core.api.v1.customers.schemas import AuthInSchemaEmail, AuthInSchemaPhone, AuthOutSchema, ConfirmInSchema, RegisterInSchema, AuthOutSchema, SendCodeSchema, TokenInSchema
+from core.api.v1.customers.schemas import AuthInSchemaEmail, AuthInSchemaPhone, AuthOutSchema, ChangePasswordInSchema, ConfirmInSchema, CustomerPhoneInSchema, RegisterInSchema, AuthOutSchema, SendCodeSchema, TokenInSchema
 from core.apps.common.exception import ServiceException
 from core.apps.customers.services.auth import BaseAuthService
 from core.core.containers import get_container
@@ -90,3 +90,44 @@ def get_new_token_handler(
     
     return ApiResponse(data=AuthOutSchema(refresh_token=customer.refresh_token, access_token=customer.access_token))
 
+@router.patch(
+    'change-password',
+    response=ApiResponse[AuthOutSchema],
+    operation_id='change-password',
+    auth=None,
+)
+def change_password(
+    request: HttpRequest,
+    access_token: str,
+    schema: ChangePasswordInSchema,
+) -> ApiResponse[AuthOutSchema]:
+    container = get_container()
+    service: BaseAuthService = container.resolve(BaseAuthService)
+    try:
+        customer = service.change_password(
+            access_token=access_token, 
+            new_password=schema.new_password,
+            password=schema.password
+        )
+    except ServiceException as exception:
+        raise HttpError(
+            status_code=400,
+            message=exception.message,
+        ) from exception
+    
+    return ApiResponse(data=AuthOutSchema(refresh_token=customer.refresh_token, access_token=customer.access_token))
+
+@router.put(
+    'reset_password',
+    response=ApiResponse[SendCodeSchema],
+    operation_id='reset-password',
+    auth=None,
+)
+async def reset_password(
+    request: HttpRequest,
+    schema: CustomerPhoneInSchema,
+) -> ApiResponse[SendCodeSchema]:
+    container = get_container()
+    service: BaseAuthService = container.resolve(BaseAuthService)
+    await service.reset_password(phone_number=schema.phone_number)
+    return ApiResponse(data=SendCodeSchema(message=f'Password sended to: {schema.phone_number}'))

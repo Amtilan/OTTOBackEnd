@@ -11,6 +11,7 @@ class CustomerEntity:
     last_name: str
     email: str
     phone_number: str
+    password: str
     
     access_token: str
     refresh_token: str

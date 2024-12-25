@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     
     'corsheaders',
     'ninja_jwt',
-    
+    'core.apps.pred_results',
     'core.apps.common',
     'core.apps.customers.apps.CustomersConfig',
 ]

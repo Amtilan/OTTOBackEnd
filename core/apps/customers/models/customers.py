@@ -31,4 +31,5 @@ class Customer(UserBaseModel):
             email=self.email,
             access_token=self.access_token,
             refresh_token=self.refresh_token,
+            password=self.password,
         )
