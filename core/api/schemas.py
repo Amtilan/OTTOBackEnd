@@ -15,7 +15,8 @@ TListItem=TypeVar("TListItem")
 class PingResponseSchema(Schema):
     result: bool
     
-
+class VersionResponseSchema(Schema):
+    version: float
 
 class ListPaginatedResponse(Schema, Generic[TListItem]):
     items: list[TListItem]
