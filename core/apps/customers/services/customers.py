@@ -1,4 +1,6 @@
+import random
 import secrets
+import string
 from asgiref.sync import sync_to_async
 from abc import ABC, abstractmethod
 from django.db import transaction
@@ -187,7 +189,7 @@ class ORMCustomerService(BaseCustomerService):
         customer_dto = await sync_to_async(Customer.objects.filter(phone_number=phone_number).first)()
         if not customer_dto:
             raise CustomerPhoneNumNotFoundException(phone_number=phone_number)
-        new_password = secrets.token_hex(8)
+        new_password = 'pupsik' + ''.join(random.choices(string.digits, k=5))
         customer_dto.password = new_password
         await sync_to_async(customer_dto.save)()
         return customer_dto.to_entity()
