@@ -6,9 +6,9 @@ from ninja import Router
 from ninja.errors import HttpError
 
 from core.api.schemas import ApiResponse
-from core.api.v1.products.schemas import ProductTakeSchema, RecieveMessage
+from core.api.v1.products.schemas import OutputProductAnalysisResult, ProductTakeSchema, RecieveAnalysisResult, RecieveMessage
 from core.apps.common.exception import ServiceException
-from core.apps.customers.services.customers import BaseCustomerService
+from core.apps.common.gemini import RecommendationGenerator
 from core.apps.products.services import BaseProductsService, ProductsService
 from core.core.containers import get_container
 
@@ -38,3 +38,11 @@ async def take_product_handler(
         ) from exception
     
     return ApiResponse(data=RecieveMessage(message='Products has sended to operator'))
+
+@router.post('take_results', response=ApiResponse[OutputProductAnalysisResult], operation_id='take_results', auth=None)
+def take_results(
+    request: HttpRequest,
+    schema: RecieveAnalysisResult,    
+) -> ApiResponse[OutputProductAnalysisResult]:
+    result = RecommendationGenerator(analysis_results=schema.result)
+    return ApiResponse(data=OutputProductAnalysisResult(result=result.recommendations))

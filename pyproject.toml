@@ -22,6 +22,7 @@ nibabel = "^5.2.1"
 highdicom = "^0.23.0"
 dicom2nifti = "^2.5.0"
 telethon = "^1.38.1"
+google-generativeai = "^0.8.3"
 
 
 [build-system]
