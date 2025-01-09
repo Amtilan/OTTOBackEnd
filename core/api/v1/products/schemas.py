@@ -13,8 +13,7 @@ class ProductTakeOutSchema(Schema):
 class RecieveMessage(Schema):
     message: str
 
-class RecieveAnalysisResult(Schema):
-    result: Dict[str, Any]  
+
     
 class OutputProductAnalysisResult(Schema):
     result: List[Dict[str, Any]] 

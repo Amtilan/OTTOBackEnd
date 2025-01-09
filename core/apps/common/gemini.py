@@ -3,6 +3,7 @@ import typing_extensions as typing
 import google.generativeai as genai
 import json
 from typing import List, Optional
+from core.apps.pred_results.service import BasePredResults, ORMPredResults
 from core.core.settings.main import env
 
 
@@ -16,10 +17,10 @@ class RecommendationGenerator:
     catalog_file: str = field(default='combined.json', init=False)
     api_key: str = field(default=env('GOOGLE_API_KEY'), init=False)
     model_name: str = field(default=env('MODEL_NAME'), init=False)
-    analysis_results: Optional[dict] = field(default=None)
+    face_path: str = field(default=None)
     product_catalog: Optional[List[dict]] = field(default=None, init=False)
     recommendations: Optional[List[dict]] = field(default=None, init=False)
-
+    pred_results: BasePredResults = field(default=ORMPredResults, init=True)
     def __post_init__(self):
         self._validate_api_key()
         self._configure_gemini()
@@ -51,19 +52,21 @@ class RecommendationGenerator:
             if product.get("title") == title:
                 return product
         return None
-
     def _generate_recommendations(self) -> List[dict]:
+        analysis_results = self.pred_results.get_better_pred_results(image_file_path=self.face_path)
+        if not analysis_results:
+            analysis_results = {}
         prompt = f"""
         ANALYZE SKIN ANALYSIS RESULTS AND RECOMMEND PRODUCTS
 
         Based on the provided JSON analysis results and the product catalog, generate a list of **exactly 20 recommended skincare products**.
-        
+
         Analysis Results:
-        {json.dumps(self.analysis_results, ensure_ascii=False, indent=4)}
-        
+        {json.dumps(analysis_results, ensure_ascii=False, indent=4)}
+
         Product Catalog:
         {json.dumps(self.product_catalog, ensure_ascii=False, indent=4)}
-        
+
         Recommendations:
         Analyze the skin conditions (e.g., acne, dark circles, wrinkles) and recommend exactly 20 products that address those concerns while considering the user's skin type and tone. If the information is unavailable, prioritize products suitable for all skin types and tones. Ensure that the recommendations are diverse and include a variety of product types (e.g., cleansers, moisturizers, serums). Each recommendation must include the title, price, and image.
         """
@@ -82,15 +85,17 @@ class RecommendationGenerator:
                         },
                         "required": ["title", "price", "picture"]
                     }
-                }
+                },
             ),
         )
+
+        # Parse the response
         recommendations = json.loads(result.text)
 
+        # Search for products based on the recommendations
         full_recommendations = [
             self._search_product_by_title(rec["title"]) for rec in recommendations
             if self._search_product_by_title(rec["title"]) is not None
         ]
+
         return full_recommendations
-
-
