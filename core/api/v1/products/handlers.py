@@ -26,9 +26,9 @@ async def take_product_handler(
     container = get_container()
     service: BaseProductsService = ProductsService()
     try:
-        await service.send_produtcs(
+        await service.send_products(
             access_token=schema.access_token,
-            products=schema.produtcs,
+            products=schema.products,
             cost=schema.cost,
         )
     except ServiceException as exception:
