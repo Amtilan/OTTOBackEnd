@@ -5,7 +5,7 @@ from ninja import File, Router, UploadedFile
 from ninja.errors import HttpError
 
 from core.api.schemas import ApiResponse
-from core.api.v1.products.schemas import OutputProductAnalysisResult, ProductTakeSchema, RecieveAnalysisResult, RecieveMessage
+from core.api.v1.products.schemas import OutputProductAnalysisResult, ProductTakeSchema, RecieveMessage
 from core.apps.common.exception import ServiceException
 from core.apps.common.gemini import RecommendationGenerator
 from core.apps.pred_results.service import ORMPredResults
@@ -51,4 +51,4 @@ def take_results(
                 temp_file.write(chunk)
             temp_path = temp_file.name
     result = RecommendationGenerator(face_path=temp_path, pred_results=ORMPredResults())
-    return ApiResponse(data=OutputProductAnalysisResult(result=result.recommendations))
+    return ApiResponse(data=OutputProductAnalysisResult(result=result.recommendations, analysis=[result.analysis_results]))

@@ -20,11 +20,14 @@ class RecommendationGenerator:
     face_path: str = field(default=None)
     product_catalog: Optional[List[dict]] = field(default=None, init=False)
     recommendations: Optional[List[dict]] = field(default=None, init=False)
+    analysis_results: dict = field(default_factory=dict, init=False)  # Added field for analysis results
     pred_results: BasePredResults = field(default=ORMPredResults, init=True)
+
     def __post_init__(self):
         self._validate_api_key()
         self._configure_gemini()
         self._load_data()
+        self.analysis_results = self._get_analysis_results()  
         self.recommendations = self._generate_recommendations()
 
     def _validate_api_key(self) -> None:
@@ -52,17 +55,18 @@ class RecommendationGenerator:
             if product.get("title") == title:
                 return product
         return None
+
+    def _get_analysis_results(self) -> dict:
+        return self.pred_results.get_better_pred_results(image_file_path=self.face_path) or {}
+
     def _generate_recommendations(self) -> List[dict]:
-        analysis_results = self.pred_results.get_better_pred_results(image_file_path=self.face_path)
-        if not analysis_results:
-            analysis_results = {}
         prompt = f"""
         ANALYZE SKIN ANALYSIS RESULTS AND RECOMMEND PRODUCTS
 
         Based on the provided JSON analysis results and the product catalog, generate a list of **exactly 20 recommended skincare products**.
 
         Analysis Results:
-        {json.dumps(analysis_results, ensure_ascii=False, indent=4)}
+        {json.dumps(self.analysis_results, ensure_ascii=False, indent=4)}
 
         Product Catalog:
         {json.dumps(self.product_catalog, ensure_ascii=False, indent=4)}
@@ -74,7 +78,7 @@ class RecommendationGenerator:
             prompt,
             generation_config=genai.GenerationConfig(
                 response_mime_type="application/json",
-                response_schema={
+                response_schema={ 
                     "type": "array",
                     "items": {
                         "type": "object",
@@ -89,10 +93,8 @@ class RecommendationGenerator:
             ),
         )
 
-        # Parse the response
         recommendations = json.loads(result.text)
 
-        # Search for products based on the recommendations
         full_recommendations = [
             self._search_product_by_title(rec["title"]) for rec in recommendations
             if self._search_product_by_title(rec["title"]) is not None
