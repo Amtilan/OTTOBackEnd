@@ -5,9 +5,10 @@ from ninja.errors import HttpError
 
 from core.api.schemas import ApiResponse
 
-from core.api.v1.customers.schemas import AuthInSchemaEmail, AuthInSchemaPhone, AuthOutSchema, ChangePasswordInSchema, ConfirmInSchema, CustomerPhoneInSchema, RegisterInSchema, AuthOutSchema, SendCodeSchema, TokenInSchema
+from core.api.v1.customers.schemas import AuthInSchemaEmail, AuthInSchemaPhone, AuthOutSchema, ChangePasswordInSchema, ConfirmInSchema, CustomerOutSchema, CustomerPhoneInSchema, RegisterInSchema, AuthOutSchema, SendCodeSchema, TokenInSchema
 from core.apps.common.exception import ServiceException
 from core.apps.customers.services.auth import BaseAuthService
+from core.apps.customers.services.customers import BaseCustomerService
 from core.core.containers import get_container
 
 
@@ -131,3 +132,18 @@ async def reset_password(
     service: BaseAuthService = container.resolve(BaseAuthService)
     await service.reset_password(phone_number=schema.phone_number)
     return ApiResponse(data=SendCodeSchema(message=f'Password sended to: {schema.phone_number}'))
+
+@router.get(
+    'get_customer_by_token',
+    response=ApiResponse[CustomerOutSchema],
+    operation_id='get_customer_by_token',
+    auth=None,
+)
+async def get_customer_by_token(
+    request: HttpRequest,
+    access_token: str,
+) -> ApiResponse[CustomerOutSchema]:
+    container = get_container()
+    service: BaseCustomerService = container.resolve(BaseCustomerService)
+    customer = await service.get_Customer_by_access_token(access_token=access_token)
+    return ApiResponse(data=CustomerOutSchema.from_orm(customer))

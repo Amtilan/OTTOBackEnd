@@ -10,6 +10,12 @@ class RegisterInSchema(Schema):
     last_name: Optional[str] = ''
     password: str
 
+class CustomerOutSchema(Schema):
+    phone_number: str
+    email: Optional[EmailStr]
+    first_name: Optional[str]
+    last_name: Optional[str]
+
 class ChangePasswordInSchema(Schema):
     password: str
     new_password: str
