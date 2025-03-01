@@ -59,6 +59,9 @@ class BaseCustomerService(ABC):
     @abstractmethod
     async def async_reset_password(self, phone_number: str) -> CustomerEntity:
         ...
+    @abstractmethod
+    def delete_customer_by_access_token(self, access_token) -> None:
+        ...
 
 
 class ORMCustomerService(BaseCustomerService):
@@ -193,3 +196,6 @@ class ORMCustomerService(BaseCustomerService):
         customer_dto.password = new_password
         await sync_to_async(customer_dto.save)()
         return customer_dto.to_entity()
+    def delete_customer_by_access_token(self, access_token) -> None:
+        customer_dto = Customer.objects.filter(access_token=access_token)
+        customer_dto.delete()

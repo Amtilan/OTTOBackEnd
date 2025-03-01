@@ -147,3 +147,18 @@ async def get_customer_by_token(
     service: BaseCustomerService = container.resolve(BaseCustomerService)
     customer = await service.get_Customer_by_access_token(access_token=access_token)
     return ApiResponse(data=CustomerOutSchema.from_orm(customer))
+
+@router.delete(
+    'delete_customer_by_token',
+    response=ApiResponse[str],
+    operation_id='delete_customer_by_token',
+    auth=None,
+)
+def delete_customer_by_token(
+    request: HttpRequest,
+    access_token: str,
+) -> ApiResponse[str]:
+    container = get_container()
+    service: BaseCustomerService = container.resolve(BaseCustomerService)
+    service.delete_customer_by_access_token(access_token=access_token)
+    return ApiResponse(data='Customer deleted')
