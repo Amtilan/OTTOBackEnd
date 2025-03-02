@@ -56,7 +56,7 @@ class RecommendationGenerator:
         
     def _search_product_by_title(self, title: str) -> Optional[dict]:
         for product in self.product_catalog:
-            print(type(product))
+            print(product)
             if product.get("title") == title:
                 return product
         return None
