@@ -31,7 +31,7 @@ class RecommendationGenerator:
     def __post_init__(self):
         self._validate_required_fields()
         self._configure_gemini()
-        self._load_data()
+        self._load_json()
         self.analysis_results = self._get_analysis_results()
         self.recommendations = self._generate_recommendations()
 
@@ -46,16 +46,11 @@ class RecommendationGenerator:
         genai.configure(api_key=self.api_key)
         self.model = genai.GenerativeModel(self.model_name)
 
+    @staticmethod
     def _load_json(file_path: str) -> list:
         with open(file_path, "r", encoding="utf-8") as f:
             return json.loads(json.load(f))  # Ожидается, что результат будет списком словарей
 
-    @staticmethod
-    def _load_json(file_path: str) -> dict:
-        """Загрузка JSON-данных из файла."""
-        with open(file_path, "r", encoding="utf-8") as file:
-            return json.load(file)
-        
     def _search_product_by_title(self, title: str) -> Optional[dict]:
         for product in self.product_catalog:
             if product.get("title") == title:
