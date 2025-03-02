@@ -46,8 +46,9 @@ class RecommendationGenerator:
         genai.configure(api_key=self.api_key)
         self.model = genai.GenerativeModel(self.model_name)
 
-    def _load_data(self) -> None:
-        self.product_catalog = self._load_json(self.catalog_file)
+    def _load_json(file_path: str) -> list:
+        with open(file_path, "r", encoding="utf-8") as f:
+            return json.loads(json.load(f))  # Ожидается, что результат будет списком словарей
 
     @staticmethod
     def _load_json(file_path: str) -> dict:
