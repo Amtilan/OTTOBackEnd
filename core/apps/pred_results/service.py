@@ -70,9 +70,9 @@ class ORMPredResults(BasePredResults):
             "api_key": env('API_key_FACE'),
             "api_secret": env('API_secret_FACE')
         }
-
+        print(skin_data)
         skin_response = None
-
+        print(files_skin)
         try:
             skin_resp = requests.post(skin_url, data=skin_data, files=files_skin)
             skin_resp.raise_for_status()
