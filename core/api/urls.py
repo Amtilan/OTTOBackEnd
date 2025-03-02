@@ -8,7 +8,7 @@ from core.api.schemas import PingResponseSchema, VersionResponseSchema
 from core.api.v1.urls import router as v1_router
 
 api=NinjaAPI(
-    title='OncoZero',
+    title='OTTO',
     docs_decorator=staff_member_required
 )
 
