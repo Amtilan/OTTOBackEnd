@@ -49,9 +49,11 @@ class RecommendationGenerator:
     @staticmethod
     def _load_json(file_path: str) -> list:
         with open(file_path, "r", encoding="utf-8") as f:
-            return json.loads(json.load(f))  # Ожидается, что результат будет списком словарей
+            return json.load(f)  # Ожидается, что результат будет списком словарей
+    
     def _load_data(self) -> None:
         self.product_catalog = self._load_json(self.catalog_file)
+        print(self.product_catalog)
     def _search_product_by_title(self, title: str) -> Optional[dict]:
         for product in self.product_catalog:
             if product.get("title") == title:
