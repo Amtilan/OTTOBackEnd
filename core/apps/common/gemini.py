@@ -1,4 +1,5 @@
 from dataclasses import dataclass, field
+import os
 import typing_extensions as typing
 import google.generativeai as genai
 import json
@@ -14,7 +15,7 @@ class ProductRecommendation(typing.TypedDict):
 
 @dataclass
 class RecommendationGenerator:
-    catalog_file: str = field(default='combined.json', init=False)
+    catalog_file: str = field(default=os.path.join(os.path.dirname(__file__), 'combined.json'), init=False)
     api_key: str = field(default=env('GOOGLE_API_KEY'), init=False)
     model_name: str = field(default=env('MODEL_NAME'), init=False)
     face_path: str = field(default=None)
