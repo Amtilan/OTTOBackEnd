@@ -1,5 +1,4 @@
 from dataclasses import dataclass, field
-import os
 import typing_extensions as typing
 import google.generativeai as genai
 import json
@@ -15,29 +14,33 @@ class ProductRecommendation(typing.TypedDict):
 
 @dataclass
 class RecommendationGenerator:
-    catalog_file: str = field(default=os.path.join(os.path.dirname(__file__), 'combined.json'), init=False)
-    api_key: str = field(default=env('GOOGLE_API_KEY'), init=False)
-    model_name: str = field(default=env('MODEL_NAME'), init=False)
-    face_path: str = field(default=None)
-    product_catalog: Optional[List[dict]] = field(default=None, init=False)
-    recommendations: Optional[List[dict]] = field(default=None, init=False)
-    analysis_results: dict = field(default_factory=dict, init=False)
-    pred_results: BasePredResults = field(default=ORMPredResults, init=True)
+    # Параметры с значениями по умолчанию
+    catalog_file: str = 'combined.json'
+    api_key: str = env('GOOGLE_API_KEY')
+    model_name: str = env('MODEL_NAME')
+    face_path: Optional[str] = None
+    pred_results: BasePredResults = field(default_factory=ORMPredResults)
 
-    def post_init(self):
-        self._validate_api_key()
+    # Поля, инициализируемые внутренне
+    product_catalog: List[dict] = field(init=False, default_factory=list)
+    recommendations: Optional[List[dict]] = field(init=False, default=None)
+    analysis_results: dict = field(init=False, default_factory=dict)
+    model: genai.GenerativeModel = field(init=False)
+
+    def __post_init__(self):
+        self._validate_required_fields()
         self._configure_gemini()
         self._load_data()
         self.analysis_results = self._get_analysis_results()
         self.recommendations = self._generate_recommendations()
 
-    def _validate_api_key(self) -> None:
+    def _validate_required_fields(self):
+        if not self.face_path:
+            raise ValueError("face_path is required")
         if not self.api_key:
-            raise EnvironmentError(
-                "Необходимо установить переменную окружения GOOGLE_API_KEY "
-                "со значением вашего Gemini API ключа."
-            )
+            raise EnvironmentError("GOOGLE_API_KEY is not set in environment variables")
 
+    # Остальные методы остаются без изменений
     def _configure_gemini(self) -> None:
         genai.configure(api_key=self.api_key)
         self.model = genai.GenerativeModel(self.model_name)
@@ -50,7 +53,7 @@ class RecommendationGenerator:
         """Загрузка JSON-данных из файла."""
         with open(file_path, "r", encoding="utf-8") as file:
             return json.load(file)
-
+        
     def _search_product_by_title(self, title: str) -> Optional[dict]:
         for product in self.product_catalog:
             if product.get("title") == title:
