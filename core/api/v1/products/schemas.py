@@ -18,3 +18,4 @@ class RecieveMessage(Schema):
 class OutputProductAnalysisResult(Schema):
     result: List[Dict[str, Any]] 
     analysis: List[Any] 
+    analysis_report: str

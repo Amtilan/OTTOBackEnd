@@ -25,6 +25,7 @@ class RecommendationGenerator:
     # Поля, инициализируемые внутренне
     product_catalog: List[dict] = field(init=False, default_factory=list)
     recommendations: Optional[List[dict]] = field(init=False, default=None)
+    analysis_report: Optional[str] = field(init=False, default=None)
     analysis_results: dict = field(init=False, default_factory=dict)
     model: genai.GenerativeModel = field(init=False)
 
@@ -66,7 +67,7 @@ class RecommendationGenerator:
 
 
     def _generate_recommendations(self) -> List[dict]:
-        analysis_report = self._generate_analysis_report()  # Generate the report
+        self.analysis_report = self._generate_analysis_report()  # Generate the report
 
         prompt = f"""
         СГЕНЕРИРУЙ СПИСОК ИЗ 20 РЕКОМЕНДУЕМЫХ ПРОДУКТОВ
@@ -74,7 +75,7 @@ class RecommendationGenerator:
         Основываясь на предоставленном отчете о состоянии кожи и каталоге продуктов, сгенерируй список из ровно 20 рекомендуемых продуктов по уходу за кожей.
 
         Отчет о состоянии кожи:
-        {analysis_report}
+        {self.analysis_report}
 
         Каталог продуктов:
         {json.dumps(self.product_catalog, ensure_ascii=False, indent=4)}

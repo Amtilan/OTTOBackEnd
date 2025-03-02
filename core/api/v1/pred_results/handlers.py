@@ -50,7 +50,6 @@ def get_all_predictions(
     result = use_case.get_all_pred_results(
         access_token=access_token,
     )
-    print(result)
     return ApiResponse(
         data=[PredResultOutSchema.from_entity(pred_result_entity) for pred_result_entity in result],
     )   
