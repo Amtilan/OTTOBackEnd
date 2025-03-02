@@ -31,7 +31,7 @@ class RecommendationGenerator:
     def __post_init__(self):
         self._validate_required_fields()
         self._configure_gemini()
-        self._load_json()
+        self._load_data()
         self.analysis_results = self._get_analysis_results()
         self.recommendations = self._generate_recommendations()
 
@@ -50,7 +50,8 @@ class RecommendationGenerator:
     def _load_json(file_path: str) -> list:
         with open(file_path, "r", encoding="utf-8") as f:
             return json.loads(json.load(f))  # Ожидается, что результат будет списком словарей
-
+    def _load_data(self) -> None:
+        self.product_catalog = self._load_json(self.catalog_file)
     def _search_product_by_title(self, title: str) -> Optional[dict]:
         for product in self.product_catalog:
             if product.get("title") == title:
