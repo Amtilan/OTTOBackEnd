@@ -62,8 +62,9 @@ class ORMPredResults(BasePredResults):
             print(f"Файл {image_file_path} не найден. Проверьте путь.")
             return None
 
-        files_skin = {"image_file": BytesIO(image_bytes)}
-
+        files_skin = {
+            "image_file": ("image.jpg", BytesIO(image_bytes), "image/jpeg")
+        }
         skin_url = "https://api-us.faceplusplus.com/facepp/v1/skinanalyze"
 
         skin_data = {
