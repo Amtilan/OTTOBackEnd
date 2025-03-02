@@ -55,11 +55,12 @@ class RecommendationGenerator:
         self.product_catalog = self._load_json(self.catalog_file)
         
     def _search_product_by_title(self, title: str) -> Optional[dict]:
-        for product in self.product_catalog:
+        for product in self.product_catalog.get("products", []):  # Берем список продуктов
             print(product)
             if product.get("title") == title:
                 return product
         return None
+
 
     def _get_analysis_results(self) -> dict:
         return self.pred_results.get_better_pred_results(image_file_path=self.face_path) or {}
