@@ -51,4 +51,5 @@ def take_results(
                 temp_file.write(chunk)
             temp_path = temp_file.name
     result = RecommendationGenerator(face_path=temp_path, pred_results=ORMPredResults())
+    print(result)
     return ApiResponse(data=OutputProductAnalysisResult(result=result.recommendations, analysis=[result.analysis_results]))
