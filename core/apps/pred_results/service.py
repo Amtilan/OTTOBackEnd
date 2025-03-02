@@ -54,7 +54,7 @@ class ORMPredResults(BasePredResults):
         return [predres_dto.to_entity() for predres_dto in predres_dtos]
 
 
-    def get_better_pred_results(image_file_path: str) -> dict[str, any]:
+    def get_better_pred_results(self,image_file_path: str) -> dict[str, any]:
         try:
             with open(image_file_path, "rb") as f:
                 image_bytes = f.read()
