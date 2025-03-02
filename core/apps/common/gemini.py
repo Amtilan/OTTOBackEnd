@@ -53,9 +53,10 @@ class RecommendationGenerator:
     
     def _load_data(self) -> None:
         self.product_catalog = self._load_json(self.catalog_file)
-        print(self.product_catalog)
+        
     def _search_product_by_title(self, title: str) -> Optional[dict]:
         for product in self.product_catalog:
+            print(type(product))
             if product.get("title") == title:
                 return product
         return None
