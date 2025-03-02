@@ -113,89 +113,104 @@ class RecommendationGenerator:
 
     def _generate_analysis_report(self) -> str:
         """Генерирует отчет о состоянии кожи на основе анализа."""
-
+        
         results = self.analysis_results
-        if not results or 'skin_status' not in results:
+        # Если данные отсутствуют или ключ "result" не найден, возвращаем сообщение об ошибке.
+        if not results or 'result' not in results:
             return "Не удалось получить данные для анализа кожи."
-
-        skin_status = results['skin_status']
-
-        report = "📌 Отчет о состоянии кожи**\n\n"
-
+        
+        # Используем данные анализа из поля "result"
+        skin_status = results['result']
+        
+        report = "📌 Отчет о состоянии кожи\n\n"
+        
         # 1. Акне и зоны воспаления/пигментации
         report += "1️⃣ **Акне и зоны воспаления/пигментации**\n\n"
         report += "**Проблемы:**\n\n"
         if skin_status.get('acne'):
             acne_confidence = skin_status['acne']['confidence']
-            report += f"- Акне (Acne): {'Выраженная проблема' if acne_confidence > 0.7 else 'Присутствует' if acne_confidence > 0.3 else 'Незначительная проблема'}. (Вероятность: {acne_confidence:.6}).\n"
+            report += (f"- Акне (Acne): {'Выраженная проблема' if acne_confidence > 0.7 else 'Присутствует' if acne_confidence > 0.3 else 'Незначительная проблема'}."
+                    f" (Вероятность: {acne_confidence:.6f}).\n")
         if skin_status.get('skin_spot'):
             spot_confidence = skin_status['skin_spot']['confidence']
-            report += f"- Пятна на коже (Skin Spot): {'Заметная проблема' if spot_confidence > 0.7 else 'Присутствуют' if spot_confidence > 0.3 else 'Незначительные'}. (Вероятность: {spot_confidence:.6}).\n"
+            report += (f"- Пятна на коже (Skin Spot): {'Заметная проблема' if spot_confidence > 0.7 else 'Присутствуют' if spot_confidence > 0.3 else 'Незначительные'}."
+                    f" (Вероятность: {spot_confidence:.6f}).\n")
         if skin_status.get('mole'):
-             mole_confidence = skin_status['mole']['confidence']
-             report += f"- Родинки/бородавки (Mole): Присутствуют. (Вероятность: {mole_confidence:6}).\n"
-
-
+            mole_confidence = skin_status['mole']['confidence']
+            report += f"- Родинки/бородавки (Mole): Присутствуют. (Вероятность: {mole_confidence:.6f}).\n"
+        
         report += "\n**Положительные моменты:**\n\n"
         if skin_status.get('blackhead'):
             blackhead_confidence = skin_status['blackhead']['confidence']
-            report += f"- Черные точки (Blackhead): {'Практически отсутствуют' if blackhead_confidence < 0.1 else 'Присутствуют в небольшом количестве' if blackhead_confidence < 0.5 else 'Присутствуют'}. (Вероятность: {blackhead_confidence:.6}).\n"
-
+            report += (f"- Черные точки (Blackhead): {'Практически отсутствуют' if blackhead_confidence < 0.1 else 'Присутствуют в небольшом количестве' if blackhead_confidence < 0.5 else 'Присутствуют'}."
+                    f" (Вероятность: {blackhead_confidence:.6f}).\n")
+        
         # 2. Тёмные круги и морщины
         report += "\n2️⃣ **Тёмные круги и морщины**\n\n"
         report += "**Проблемы:**\n\n"
         if skin_status.get('nasolabial_fold'):
             nasolabial_confidence = skin_status['nasolabial_fold']['confidence']
-            report += f"- Носогубные складки (Nasolabial Fold): {'Присутствуют' if nasolabial_confidence > 0.5 else 'Слабо выражены'}. (Вероятность: {nasolabial_confidence:.6}).\n"
-
+            report += (f"- Носогубные складки (Nasolabial Fold): {'Присутствуют' if nasolabial_confidence > 0.5 else 'Слабо выражены'}."
+                    f" (Вероятность: {nasolabial_confidence:.6f}).\n")
+        
         report += "\n**Положительные моменты:**\n\n"
         if skin_status.get('dark_circle'):
             dark_circle_confidence = skin_status['dark_circle']['confidence']
-            report += f"- Темные круги (Dark Circle): {'Отсутствуют' if dark_circle_confidence > 0.7 else 'Практически отсутствуют'}. (Вероятность: {dark_circle_confidence:.6}).\n"
+            report += (f"- Темные круги (Dark Circle): {'Отсутствуют' if dark_circle_confidence > 0.7 else 'Практически отсутствуют'}."
+                    f" (Вероятность: {dark_circle_confidence:.6f}).\n")
         if skin_status.get('eye_pouch'):
             eye_pouch_confidence = skin_status['eye_pouch']['confidence']
-            report += f"- Мешки под глазами (Eye Pouch): Отсутствуют. (Вероятность: {eye_pouch_confidence:.6}).\n"
+            report += f"- Мешки под глазами (Eye Pouch): Отсутствуют. (Вероятность: {eye_pouch_confidence:.6f}).\n"
         if skin_status.get('forehead_wrinkle'):
             forehead_wrinkle_confidence = skin_status['forehead_wrinkle']['confidence']
-            report += f"- Морщины на лбу (Forehead Wrinkle): {'Отсутствуют' if forehead_wrinkle_confidence < 0.1 else 'Присутствуют в небольшом количестве'}. (Вероятность: {forehead_wrinkle_confidence:.6}).\n"
+            report += (f"- Морщины на лбу (Forehead Wrinkle): {'Отсутствуют' if forehead_wrinkle_confidence < 0.1 else 'Присутствуют в небольшом количестве'}."
+                    f" (Вероятность: {forehead_wrinkle_confidence:.6f}).\n")
         if skin_status.get('eye_finelines'):
-             eye_finelines_confidence = skin_status['eye_finelines']['confidence']
-             report += f"- Мелкие морщины вокруг глаз (Eye Finelines): {'Отсутствуют' if eye_finelines_confidence < 0.1 else 'Присутствуют'}. (Вероятность: {eye_finelines_confidence:.6}).\n"
+            eye_finelines_confidence = skin_status['eye_finelines']['confidence']
+            report += (f"- Мелкие морщины вокруг глаз (Eye Finelines): {'Отсутствуют' if eye_finelines_confidence < 0.1 else 'Присутствуют'}."
+                    f" (Вероятность: {eye_finelines_confidence:.6f}).\n")
         if skin_status.get('crows_feet'):
-             crows_feet_confidence = skin_status['crows_feet']['confidence']
-             report += f"- \"Гусиные лапки\" (Crows Feet): {'Отсутствуют' if crows_feet_confidence < 0.1 else 'Присутствуют'}. (Вероятность: {crows_feet_confidence:.6}).\n"
+            crows_feet_confidence = skin_status['crows_feet']['confidence']
+            report += (f"- \"Гусиные лапки\" (Crows Feet): {'Отсутствуют' if crows_feet_confidence < 0.1 else 'Присутствуют'}."
+                    f" (Вероятность: {crows_feet_confidence:.6f}).\n")
         if skin_status.get('glabella_wrinkle'):
             glabella_wrinkle_confidence = skin_status['glabella_wrinkle']['confidence']
-            report += f"- Межбровные морщины (Glabella Wrinkle): {'Отсутствуют' if glabella_wrinkle_confidence < 0.1 else 'Присутствуют'}. (Вероятность: {glabella_wrinkle_confidence:.6}).\n"
-
-        #left_eyelids and right_eyelids
+            report += (f"- Межбровные морщины (Glabella Wrinkle): {'Отсутствуют' if glabella_wrinkle_confidence < 0.1 else 'Присутствуют'}."
+                    f" (Вероятность: {glabella_wrinkle_confidence:.6f}).\n")
+        
+        # Состояние век (left_eyelids и right_eyelids)
         if skin_status.get('left_eyelids') and skin_status.get('right_eyelids'):
             left_eyelids_confidence = skin_status['left_eyelids']['confidence']
             right_eyelids_confidence = skin_status['right_eyelids']['confidence']
-            report += f"- Состояние век (Left Eyelids and Right Eyelids): В норме. (Вероятность: {left_eyelids_confidence:.6} и {right_eyelids_confidence:.6} соответственно).\n"
-
+            report += (f"- Состояние век (Left Eyelids and Right Eyelids): В норме. "
+                    f"(Вероятность: {left_eyelids_confidence:.6f} и {right_eyelids_confidence:.6f} соответственно).\n")
+        
         # 3. Текстура кожи и поры
         report += "\n3️⃣ **Текстура кожи и поры**\n\n"
         report += "**Проблемы:**\n\n"
         if skin_status.get('pores_left_cheek'):
             pores_left_cheek_confidence = skin_status['pores_left_cheek']['confidence']
-            report += f"- Поры на левой щеке (Pores Left Cheek): {'Расширены' if pores_left_cheek_confidence > 0.7 else 'Умеренно расширены' if pores_left_cheek_confidence > 0.3 else 'В норме'}. (Вероятность: {pores_left_cheek_confidence:.6}).\n"
+            report += (f"- Поры на левой щеке (Pores Left Cheek): {'Расширены' if pores_left_cheek_confidence > 0.7 else 'Умеренно расширены' if pores_left_cheek_confidence > 0.3 else 'В норме'}."
+                    f" (Вероятность: {pores_left_cheek_confidence:.6f}).\n")
         if skin_status.get('pores_right_cheek'):
             pores_right_cheek_confidence = skin_status['pores_right_cheek']['confidence']
-            report += f"- Поры на правой щеке (Pores Right Cheek): {'Сильно расширены' if pores_right_cheek_confidence > 0.7 else 'Расширены' if pores_right_cheek_confidence > 0.3 else 'В норме'}. (Вероятность: {pores_right_cheek_confidence:.6}).\n"
+            report += (f"- Поры на правой щеке (Pores Right Cheek): {'Сильно расширены' if pores_right_cheek_confidence > 0.7 else 'Расширены' if pores_right_cheek_confidence > 0.3 else 'В норме'}."
+                    f" (Вероятность: {pores_right_cheek_confidence:.6f}).\n")
         if skin_status.get('pores_forehead'):
             pores_forehead_confidence = skin_status['pores_forehead']['confidence']
-            report += f"- Поры на лбу (Pores Forehead): {'Вероятно, расширены' if pores_forehead_confidence > 0.5 else 'В норме'}. (Вероятность: {pores_forehead_confidence:.6}).\n"
-
+            report += (f"- Поры на лбу (Pores Forehead): {'Вероятно, расширены' if pores_forehead_confidence > 0.5 else 'В норме'}."
+                    f" (Вероятность: {pores_forehead_confidence:.6f}).\n")
+        
         report += "\n**Положительные моменты:**\n\n"
         if skin_status.get('pores_jaw'):
-             pores_jaw_confidence = skin_status['pores_jaw']['confidence']
-             report += f"- Поры на подбородке (Pores Jaw): {'В норме' if pores_jaw_confidence > 0.7 else 'Незначительно расширены'}. (Вероятность: {pores_jaw_confidence:.6}).\n"
-
+            pores_jaw_confidence = skin_status['pores_jaw']['confidence']
+            report += (f"- Поры на подбородке (Pores Jaw): {'В норме' if pores_jaw_confidence > 0.7 else 'Незначительно расширены'}."
+                    f" (Вероятность: {pores_jaw_confidence:.6f}).\n")
+        
         # 4. Тип кожи
         report += "\n4️⃣ **Тип кожи**\n\n"
         if skin_status.get('skin_type'):
-            skin_type_confidence = skin_status['skin_type']
+            skin_type_data = skin_status['skin_type']
             skin_types = {
                 0: "Тип 0 (Очень сухая)",
                 1: "Тип 1 (Сухая)",
@@ -203,15 +218,20 @@ class RecommendationGenerator:
                 3: "Тип 3 (Жирная)"
             }
             
-            # Find the most likely skin type
-            best_type = max(skin_type_confidence, key=skin_type_confidence.get)
-            report += f"- Общий тип кожи: {skin_types.get(best_type, 'Неопределенный тип')}. (Вероятность: {skin_type_confidence[best_type]:.6}).\n\n"
-
-            report += "**Детализация по типам:**\n"
-            for type_num, type_desc in skin_types.items():
-                confidence = skin_type_confidence.get(type_num, 0)
-                report += f"- {type_desc}: {confidence:.6}\n"
-
+            # Если структура skin_type содержит детализацию
+            if isinstance(skin_type_data, dict) and 'details' in skin_type_data:
+                skin_type_confidence = skin_type_data['details']
+                best_type = max(skin_type_confidence, key=lambda k: skin_type_confidence[k]['confidence'])
+                report += (f"- Общий тип кожи: {skin_types.get(int(best_type), 'Неопределенный тип')}."
+                        f" (Вероятность: {skin_type_confidence[best_type]['confidence']:.6f}).\n\n")
+        
+                report += "**Детализация по типам:**\n"
+                for type_num, type_desc in skin_types.items():
+                    confidence = skin_type_confidence.get(str(type_num), {'confidence': 0})['confidence']
+                    report += f"- {type_desc}: {confidence:.6f}\n"
+            else:
+                report += f"- Общий тип кожи: {skin_types.get(skin_type_data, 'Неопределенный тип')}\n"
+        
         # 5. Общий анализ
         report += "\n5️⃣ **Общий анализ**\n\n"
         report += "**Основные проблемы: "
@@ -221,18 +241,18 @@ class RecommendationGenerator:
         if skin_status.get('skin_spot') and skin_status['skin_spot']['confidence'] > 0.7:
             main_problems.append("Пигментация (пятна на коже)")
         if (skin_status.get('pores_left_cheek') and skin_status['pores_left_cheek']['confidence'] > 0.7) or \
-           (skin_status.get('pores_right_cheek') and skin_status['pores_right_cheek']['confidence'] > 0.7):
+        (skin_status.get('pores_right_cheek') and skin_status['pores_right_cheek']['confidence'] > 0.7):
             main_problems.append("Расширенные поры (особенно на щеках)")
         if skin_status.get('nasolabial_fold') and skin_status['nasolabial_fold']['confidence'] > 0.5:
             main_problems.append("Носогубные складки")
         report += ", ".join(main_problems) + ".\n" if main_problems else "Основные проблемы не выявлены.\n"
-
+        
         report += "Вторичные/потенциальные проблемы: "
         secondary_problems = []
         if skin_status.get('pores_forehead') and skin_status['pores_forehead']['confidence'] > 0.5:
             secondary_problems.append("Возможное расширение пор на лбу")
         report += ", ".join(secondary_problems) + ".\n" if secondary_problems else "Вторичные проблемы не выявлены.\n"
-
+        
         report += "Положительные аспекты: "
         positive_aspects = []
         if skin_status.get('dark_circle') and skin_status['dark_circle']['confidence'] > 0.7:
@@ -240,10 +260,10 @@ class RecommendationGenerator:
         if skin_status.get('eye_pouch') and skin_status['eye_pouch']['confidence'] > 0.7:
             positive_aspects.append("Отсутствие мешков под глазами")
         if skin_status.get('blackhead') and skin_status['blackhead']['confidence'] < 0.1:
-             positive_aspects.append("Отсутствие черных точек")
-        if skin_status.get('pores_jaw') and skin_status['pores_jaw']['confidence'] >0.7:
+            positive_aspects.append("Отсутствие черных точек")
+        if skin_status.get('pores_jaw') and skin_status['pores_jaw']['confidence'] > 0.7:
             positive_aspects.append("Нормальное состояние пор на подбородке")
-
+        
         low_wrinkle_types = []
         if skin_status.get('forehead_wrinkle') and skin_status['forehead_wrinkle']['confidence'] < 0.1:
             low_wrinkle_types.append("морщин на лбу")
@@ -252,14 +272,13 @@ class RecommendationGenerator:
         if skin_status.get('crows_feet') and skin_status['crows_feet']['confidence'] < 0.1:
             low_wrinkle_types.append("\"гусиных лапок\"")
         if skin_status.get('glabella_wrinkle') and skin_status['glabella_wrinkle']['confidence'] < 0.1:
-             low_wrinkle_types.append("межбровных морщин")
+            low_wrinkle_types.append("межбровных морщин")
         if low_wrinkle_types:
             positive_aspects.append("Отсутствие большинства типов морщин (" + ", ".join(low_wrinkle_types) + ")")
-        if skin_status.get('left_eyelids') and skin_status.get('right_eyelids') and skin_status['left_eyelids']['confidence'] > 0.7 and skin_status['right_eyelids']['confidence'] > 0.7:
+        if (skin_status.get('left_eyelids') and skin_status.get('right_eyelids') and 
+            skin_status['left_eyelids']['confidence'] > 0.7 and skin_status['right_eyelids']['confidence'] > 0.7):
             positive_aspects.append("Хорошее состояние век")
-
+        
         report += ", ".join(positive_aspects) + ".\n" if positive_aspects else "Положительные аспекты не выявлены.\n"
-
-
-
+        
         return report
