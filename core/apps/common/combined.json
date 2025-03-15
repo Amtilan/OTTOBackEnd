@@ -5836,5 +5836,317 @@
             "number": 1,
             "popular": 0
         }
+    },
+    {
+        "id": 12076220,
+        "brand": "JMsolution",
+        "title": "Охлаждающий санскрин",
+        "price": 4770,
+        "image_url": "https://taplink.st/p/9/9/4/f/62801325.jpg?0",
+        "price_new": 5770,
+        "category": {
+            "name": "Sunscreens",
+            "number": 6,
+            "popular": 0
+        }
+    },
+    {
+        "id": 12076212,
+        "brand": "JMsolution",
+        "title": "Солнцезащитный крем с экстрактом жемчуга",
+        "price": 4790,
+        "image_url": "https://taplink.st/p/0/6/4/a/62801280.jpg?0",
+        "price_new": 5790,
+        "category": {
+            "name": "Sunscreens",
+            "number": 6,
+            "popular": 0
+        }
+    },
+    {
+        "id": 12064527,
+        "brand": "Anua",
+        "title": "Успокаивающий солнцезащитный крем с хауттюйнией",
+        "price": 8990,
+        "image_url": "https://taplink.st/p/d/c/b/5/62687145.jpg?0",
+        "price_new": 9990,
+        "category": {
+            "name": "Sunscreens",
+            "number": 6,
+            "popular": 0
+        }
+    },
+    {
+        "id": 12063088,
+        "brand": "Bueno",
+        "title": "Осветляющий солнцезащитный крем с центеллой",
+        "price": 7590,
+        "image_url": "https://taplink.st/p/3/9/9/7/62673920.jpg?0",
+        "price_new": 8590,
+        "category": {
+            "name": "Sunscreens",
+            "number": 6,
+            "popular": 0
+        }
+    },
+    {
+        "id": 12039002,
+        "brand": "Village 11 Factory",
+        "title": "Солнцезащитный стик SPF 50+ PA++++",
+        "price": 9990,
+        "image_url": "https://taplink.st/p/2/9/d/c/62479685.jpg?0",
+        "price_new": 10990,
+        "category": {
+            "name": "Sunscreens",
+            "number": 6,
+            "popular": 0
+        }
+    },
+    {
+        "id": 12038993,
+        "brand": "Village 11 Factory",
+        "title": "Солнцезащитный флюид 50 мл",
+        "price": 10990,
+        "image_url": "https://taplink.st/p/a/4/0/3/62556914.jpg?0",
+        "price_new": 11990,
+        "category": {
+            "name": "Sunscreens",
+            "number": 6,
+            "popular": 0
+        }
+    },
+    {
+        "id": 12068035,
+        "brand": "IsNtree",
+        "title": "Тонирующий солнцезащитный крем с корнем ямса",
+        "price": 9590,
+        "image_url": "https://taplink.st/p/4/9/2/b/62720685.jpg?0",
+        "price_new": 10590,
+        "category": {
+            "name": "Sunscreens",
+            "number": 6,
+            "popular": 0
+        }
+    },
+    {
+        "id": 12067512,
+        "brand": "Dr.Ceuracle",
+        "title": "Солнцезащитный веганский крем с центеллой",
+        "price": 8990,
+        "image_url": "https://taplink.st/p/3/d/5/6/63160094.jpg?0",
+        "price_new": 9990,
+        "category": {
+            "name": "Sunscreens",
+            "number": 6,
+            "popular": 0
+        }
+    },
+    {
+        "id": 12076220,
+        "brand": "JMsolution",
+        "title": "Охлаждающий санскрин",
+        "price": 4770,
+        "price_new": 5770,
+        "image_url": "https://taplink.st/p/9/9/4/f/62801325.jpg?0",
+        "category": {
+            "name": "Sunscreens",
+            "number": 6,
+            "popular": 0
+        }
+    },
+    {
+        "id": 12076212,
+        "brand": "JMsolution",
+        "title": "Солнцезащитный крем с экстрактом жемчуга",
+        "price": 4790,
+        "price_new": 5790,
+        "image_url": "https://taplink.st/p/0/6/4/a/62801280.jpg?0",
+        "category": {
+            "name": "Sunscreens",
+            "number": 6,
+            "popular": 0
+        }
+    },
+    {
+        "id": 12064527,
+        "brand": "Anua",
+        "title": "Успокаивающий солнцезащитный крем с хауттюйнией",
+        "price": 8990,
+        "price_new": 9990,
+        "image_url": "https://taplink.st/p/d/c/b/5/62687145.jpg?0",
+        "category": {
+            "name": "Sunscreens",
+            "number": 6,
+            "popular": 0
+        }
+    },
+    {
+        "id": 12063088,
+        "brand": "Bueno",
+        "title": "Осветляющий солнцезащитный крем с центеллой",
+        "price": 7590,
+        "price_new": 8590,
+        "image_url": "https://taplink.st/p/3/9/9/7/62673920.jpg?0",
+        "category": {
+            "name": "Sunscreens",
+            "number": 6,
+            "popular": 0
+        }
+    },
+    {
+        "id": 12039002,
+        "brand": "Village 11 Factory",
+        "title": "Солнцезащитный стик SPF 50+ PA++++",
+        "price": 9990,
+        "price_new": 10990,
+        "image_url": "https://taplink.st/p/2/9/d/c/62479685.jpg?0",
+        "category": {
+            "name": "Sunscreens",
+            "number": 6,
+            "popular": 0
+        }
+    },
+    {
+        "id": 12038993,
+        "brand": "Village 11 Factory",
+        "title": "Солнцезащитный флюид 50 мл",
+        "price": 10990,
+        "price_new": 11990,
+        "image_url": "https://taplink.st/p/a/4/0/3/62556914.jpg?0",
+        "category": {
+            "name": "Sunscreens",
+            "number": 6,
+            "popular": 0
+        }
+    },
+    {
+        "id": 12068035,
+        "brand": "IsNtree",
+        "title": "Тонирующий солнцезащитный крем с корнем ямса",
+        "price": 9590,
+        "price_new": 10590,
+        "image_url": "https://taplink.st/p/4/9/2/b/62720685.jpg?0",
+        "category": {
+            "name": "Sunscreens",
+            "number": 6,
+            "popular": 0
+        }
+    },
+    {
+        "id": 12067512,
+        "brand": "Dr.Ceuracle",
+        "title": "Солнцезащитный веганский крем с центеллой",
+        "price": 8990,
+        "price_new": 9990,
+        "image_url": "https://taplink.st/p/3/d/5/6/63160094.jpg?0",
+        "category": {
+            "name": "Sunscreens",
+            "number": 6,
+            "popular": 0
+        }
+    },
+    {
+        "id": 12067318,
+        "brand": "Bohicare",
+        "title": "Солнцезащитный Крем Spf 50+",
+        "price": 10000,
+        "price_new": 11000,
+        "image_url": "https://taplink.st/p/5/0/8/f/62715588.jpg?0",
+        "category": {
+            "name": "Sunscreens",
+            "number": 6,
+            "popular": 0
+        }
+    },
+    {
+        "id": 12036437,
+        "brand": "Heimish",
+        "title": "Увлажняющий кушон для сияния кожи с рефилом",
+        "price": 12590,
+        "price_new": 13590,
+        "image_url": "https://taplink.st/p/0/e/f/a/62451808.jpg?0",
+        "category": {
+            "name": "Sunscreens",
+            "number": 6,
+            "popular": 0
+        }
+    },
+    {
+        "id": 12245731,
+        "brand": "SUR.MEDIC+",
+        "title": "Легкий солнцезащитный праймер",
+        "price": 8990,
+        "price_new": 9990,
+        "image_url": "https://taplink.st/p/9/d/e/f/64294423.jpg?0",
+        "category": {
+            "name": "Sunscreens",
+            "number": 6,
+            "popular": 0
+        }
+    },
+    {
+        "id": 12245723,
+        "brand": "SUR.MEDIC+",
+        "title": "Успокаивающий солнцезащитный крем с азуленом",
+        "price": 8990,
+        "price_new": 9990,
+        "image_url": "https://taplink.st/p/0/5/2/9/64294393.jpg?0",
+        "category": {
+            "name": "Sunscreens",
+            "number": 6,
+            "popular": 0
+        }
+    },
+    {
+        "id": 12245709,
+        "brand": "Tocobo",
+        "title": "Успокаивающий солнцезащитный стик",
+        "price": 7990,
+        "price_new": 8990,
+        "image_url": "https://taplink.st/p/c/6/3/4/64294239.webp?0",
+        "category": {
+            "name": "Sunscreens",
+            "number": 6,
+            "popular": 0
+        }
+    },
+    {
+        "id": 12031107,
+        "brand": "Tocobo",
+        "title": "Себорегулирующий солнцезащитный стик для лица",
+        "price": 7990,
+        "price_new": 8990,
+        "image_url": "https://taplink.st/p/e/c/4/0/62407864.png?0",
+        "category": {
+            "name": "Sunscreens",
+            "number": 6,
+            "popular": 0
+        }
+    },
+    {
+        "id": 12030742,
+        "brand": "BLIV:U",
+        "title": "Коллагеновый солнцезащитный крем с пептидами",
+        "price": 8590,
+        "price_new": 9590,
+        "image_url": "https://taplink.st/p/4/6/0/7/62404994.jpg?0",
+        "category": {
+            "name": "Sunscreens",
+            "number": 6,
+            "popular": 0
+        }
+    },
+    {
+        "id": 12224155,
+        "brand": "Round Lab",
+        "title": "Детский мягкий солнцезащитный крем SPF 50+ PA++++ 60ml",
+        "price": 7990,
+        "price_new": 8990,
+        "image_url": "https://taplink.st/p/5/0/c/1/64109758.jpg?0",
+        "category": {
+            "name": "Sunscreens",
+            "number": 6,
+            "popular": 0
+        }
     }
 ]
